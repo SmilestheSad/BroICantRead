@@ -21,7 +21,7 @@ export default function TextCapure(){
         return <View/>
     }
     if (permission === false){
-        return <Text>Permission has been denied >:(</Text>
+        return <Text>Permission has been denied</Text>
     } 
     return(
     <Text>Hello World</Text>
