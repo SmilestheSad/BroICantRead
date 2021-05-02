@@ -14,7 +14,7 @@ export default function Home({ navigation }) {
       onPress = {() => {
       console.log("testing")
       navigation.navigate("Camera")}}>
-          <Text style = {{fontSize: 30}}> Go to Camera</Text>
+          <Text style = {{fontSize: 30, top: 30}}> Go to Camera</Text>
       </TouchableOpacity>
       <StatusBar style="auto" />
       <View style={styles.footer}>
