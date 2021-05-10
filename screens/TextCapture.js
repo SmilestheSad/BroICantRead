@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useRef} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Camera } from "expo-camera";
-
-
-
+import {GOOGLE_API_KEY} from "@env"
+import * as FileSystem from 'expo-file-system';
 export default function TextCapure() {
   const [permission, setPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
@@ -17,22 +16,58 @@ export default function TextCapure() {
       } else {
         console.log("perish");
       }
+    })
+    .catch((err) => {
+      console.log(err)
     });
   }, []);
 
   const flipCam = () => {
-    type === Camera.Constants.Type.back 
-    ? setType(Camera.Constants.Type.front)
-    : setType(Camera.Constants.Type.back)
-  }
+    type === Camera.Constants.Type.back
+      ? setType(Camera.Constants.Type.front)
+      : setType(Camera.Constants.Type.back);
+  };
 
   const takePic = async () => {
-    if (camRef){
-      const data = await camRef.current.takePictureAsync();
-      console.log(data);
+    if (camRef) {
+      try {
+        const data = await camRef.current.takePictureAsync();
+        const base64 = await FileSystem.readAsStringAsync(data.uri, { encoding: 'base64' });
+        const endpoint = `https://vision.googleapis.com/v1/images:annotate?key=${GOOGLE_API_KEY}`;
+        const body = JSON.stringify({
+          requests: [
+            {
+              image: {
+                content: base64 
+              },
+              features: [
+                {
+                  type: "TEXT_DETECTION"
+                }
+              ]
+            }
+          ]
+        })
+        console.log("about to send")
+        let res = await fetch(endpoint,{
+          method: 'POST',
+          headers:{
+            Accept: "application/json",
+            "Content-Type": "application/json"
+          },
+          body: body
+        })
+        let text = await res.json();
+        text.responses.forEach(obj => {
+          console.log(obj)
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      console.log("cam ref not defined");
     }
-
-  }
+  };
 
   if (permission === null) {
     return <View />;
@@ -43,25 +78,27 @@ export default function TextCapure() {
   return (
     <View style={styles.container}>
       <View style={styles.camera}>
-        <Camera 
-        style = {{flex: '1'}} 
-        type = {type}
-        ref = {ref => {
-          camRef.current = ref;
-          console.log('Camera ref is set')
-        }}/>
+        <Camera
+          style={{ flex: "1" }}
+          type={type}
+          ref={(ref) => {
+            camRef.current = ref;
+            console.log("Camera ref is set");
+          }}
+        />
       </View>
       <View style={styles.pictureUI}>
-        
-        <View style = {styles.takepic}>
-        <TouchableOpacity style={styles.button}>
-          <Text style = {styles.phototake} onPress = {takePic}>Take photo</Text>
-        </TouchableOpacity> 
+        <View style={styles.takepic}>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.phototake} onPress={takePic}>
+              Take photo
+            </Text>
+          </TouchableOpacity>
         </View>
-        <View style = {styles.retake}>
-        <TouchableOpacity style={styles.button} onPress = {flipCam}>
-          <Text style = {styles.phototake}>Flip Camera</Text>
-        </TouchableOpacity>
+        <View style={styles.retake}>
+          <TouchableOpacity style={styles.button} onPress={flipCam}>
+            <Text style={styles.phototake}>Flip Camera</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -81,25 +118,25 @@ const styles = StyleSheet.create({
     backgroundColor: "grey",
   },
   takepic: {
-    backgroundColor: '#2c9ae8',
-    position: 'absolute',
+    backgroundColor: "#2c9ae8",
+    position: "absolute",
     left: 0,
-    width: '50%',
-    height: '100%'
+    width: "50%",
+    height: "100%",
   },
   retake: {
     backgroundColor: "lightblue",
-    position: 'absolute',
+    position: "absolute",
     right: 0,
-    width: '50%',
-    height: '100%'
+    width: "50%",
+    height: "100%",
   },
   button: {
-    alignItems: 'center',
-    height: '100%',
-    justifyContent: 'center'
+    alignItems: "center",
+    height: "100%",
+    justifyContent: "center",
   },
   phototake: {
-    fontSize: 20
-  }
+    fontSize: 20,
+  },
 });
