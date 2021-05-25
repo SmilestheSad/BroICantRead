@@ -1,8 +1,12 @@
 import React from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Pressable, TouchableOpacity } from "react-native";
-
-
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  TouchableOpacity,
+} from "react-native";
 
 export default function Home({ navigation }) {
   return (
@@ -10,11 +14,13 @@ export default function Home({ navigation }) {
       <View>
         <Text style={styles.title}>Bro I cant Read</Text>
       </View>
-      <TouchableOpacity 
-      onPress = {() => {
-      console.log("testing")
-      navigation.navigate("Camera")}}>
-          <Text style = {{fontSize: 30, top: 30}}> Go to Camera</Text>
+      <TouchableOpacity
+        onPress={() => {
+          console.log("testing");
+          navigation.navigate("Camera");
+        }}
+      >
+        <Text style={{ fontSize: 30, top: 30 }}> Go to Camera</Text>
       </TouchableOpacity>
       <StatusBar style="auto" />
       <View style={styles.footer}>
