@@ -5,7 +5,7 @@ import * as Speech from "expo-speech";
 export default function TextDisplay(props) {
   return (
     <View style={styles.container}>
-      <Text style={styles.displayText}>MY TEXT IS {props.foundText}</Text>
+      <Text style={styles.displayText}>{props.foundText}</Text>
       <View style={styles.iconContainer}>
         <TouchableOpacity
           onPress={() => {

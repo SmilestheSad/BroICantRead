@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -7,21 +7,51 @@ import {
   Pressable,
   TouchableOpacity,
 } from "react-native";
+export default function Home({ route, navigation }) {
+  const [user, setUser] = useState();
+  const [userExist, setUserExist] = useState(false);
 
-export default function Home({ navigation }) {
+  useEffect(() => {
+    console.log("HELLO");
+    const { user } = route.params;
+    if (user) {
+      setUserExist(true);
+    }
+  }, []);
+
+  const signIn = () => {
+    navigation.navigate("Login");
+  };
+
   return (
     <View style={styles.container}>
       <View>
-        <Text style={styles.title}>Bro I cant Read</Text>
+        <Text style={styles.title}>Read Assist</Text>
       </View>
       <TouchableOpacity
         onPress={() => {
-          console.log("testing");
-          navigation.navigate("Camera");
+          if (userExist) {
+            navigation.navigate("Camera");
+          }
         }}
       >
-        <Text style={{ fontSize: 30, top: 30 }}> Go to Camera</Text>
+        {userExist ? (
+          <Text style={styles.camText}> Go to Camera</Text>
+        ) : (
+          <Text style={{ color: "grey" }}>Login to access camera</Text>
+        )}
       </TouchableOpacity>
+      <View style={styles.logButton}>
+        {userExist ? (
+          <TouchableOpacity>
+            <Text>Log out</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onClick={() => signIn()}>
+            <Text>Log in</Text>
+          </TouchableOpacity>
+        )}
+      </View>
       <StatusBar style="auto" />
       <View style={styles.footer}>
         <Text>Created by Victor Zheng</Text>
@@ -45,5 +75,13 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: "bold",
     fontSize: 50,
+  },
+  logButton: {
+    position: "absolute",
+    bottom: 40,
+  },
+  camText: {
+    fontSize: 30,
+    top: 30,
   },
 });
