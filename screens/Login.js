@@ -5,12 +5,22 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 export default function Login({ navigation }) {
   const signIn = async () => {
     try {
-      const { type, user } = await Google.logInAsync({
+      const { type, user, accessToken } = await Google.logInAsync({
         iosClientId: IOS_CLIENT_ID,
       });
       if (type === "success") {
-        console.log(user);
-        navigation.navigate("Home", { user: user });
+        navigation.reset({
+          index: 0,
+          routes: [
+            {
+              name: "Home",
+              params: {
+                user: user,
+                accessToken: accessToken,
+              },
+            },
+          ],
+        });
       }
     } catch (err) {
       console.log(err);

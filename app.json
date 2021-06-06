@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "BroICantRead",
-    "slug": "BroICantRead",
+    "name": "Fread",
+    "slug": "Fread",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,14 +13,12 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "config":{
-        "googleSignIn":{
-          "reservedClientId":"com.googleusercontent.apps.354749257150-tvspt9hb5jegj20rtd812k6osgjk9i8k"
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.354749257150-tvspt9hb5jegj20rtd812k6osgjk9i8k"
         }
       }
     },

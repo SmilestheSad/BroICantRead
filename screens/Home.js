@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Pressable,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import * as Google from "expo-google-app-auth";
+import { IOS_CLIENT_ID } from "@env";
 export default function Home({ route, navigation }) {
   const [user, setUser] = useState();
+  const [accessToken, setAccessToken] = useState();
   const [userExist, setUserExist] = useState(false);
 
   useEffect(() => {
     console.log("HELLO");
-    const { user } = route.params;
+    const { user, accessToken } = route.params;
     if (user) {
       setUserExist(true);
+      setUser(user);
+      setAccessToken(accessToken);
     }
   }, []);
 
@@ -23,10 +22,30 @@ export default function Home({ route, navigation }) {
     navigation.navigate("Login");
   };
 
+  const logOut = async () => {
+    try {
+      console.log(accessToken);
+      await Google.logOutAsync({
+        accessToken: accessToken,
+        clientId: IOS_CLIENT_ID,
+      });
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Login" }],
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View>
-        <Text style={styles.title}>Read Assist</Text>
+        <Text style={styles.title}>Fread</Text>
+        <Text style={styles.intro}>
+          {" "}
+          Hello {user ? user.name.split(" ")[0] : ""}!
+        </Text>
       </View>
       <TouchableOpacity
         onPress={() => {
@@ -43,11 +62,11 @@ export default function Home({ route, navigation }) {
       </TouchableOpacity>
       <View style={styles.logButton}>
         {userExist ? (
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => logOut()}>
             <Text>Log out</Text>
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity onClick={() => signIn()}>
+          <TouchableOpacity onPress={() => signIn()}>
             <Text>Log in</Text>
           </TouchableOpacity>
         )}
@@ -75,6 +94,7 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: "bold",
     fontSize: 50,
+    textAlign: "center",
   },
   logButton: {
     position: "absolute",
@@ -83,5 +103,8 @@ const styles = StyleSheet.create({
   camText: {
     fontSize: 30,
     top: 30,
+  },
+  intro: {
+    fontSize: 30,
   },
 });
