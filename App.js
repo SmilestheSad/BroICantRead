@@ -8,6 +8,8 @@ import TextCapture from "./screens/TextCapture";
 import LoadingScreen from "./screens/LoadingScreen";
 import Login from "./screens/Login";
 import * as firebase from "firebase";
+import "firebase/firestore";
+import "firebase/auth";
 import firebaseconfig from "./firebaseconfig";
 
 firebase.initializeApp(firebaseconfig);

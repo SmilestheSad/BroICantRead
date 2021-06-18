@@ -3,20 +3,20 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import * as Google from "expo-google-app-auth";
 import { IOS_CLIENT_ID } from "@env";
-export default function Home({ route, navigation }) {
+export default function Home({ navigation }) {
   const [user, setUser] = useState();
   const [accessToken, setAccessToken] = useState();
   const [userExist, setUserExist] = useState(false);
 
-  useEffect(() => {
-    console.log("HELLO");
-    const { user, accessToken } = route.params;
-    if (user) {
-      setUserExist(true);
-      setUser(user);
-      setAccessToken(accessToken);
-    }
-  }, []);
+  // useEffect(() => {
+  //   console.log("HELLO");
+  //   const { user, accessToken } = route.params;
+  //   if (user) {
+  //     setUserExist(true);
+  //     setUser(user);
+  //     setAccessToken(accessToken);
+  //   }
+  // }, []);
 
   const signIn = () => {
     navigation.navigate("Login");
@@ -44,7 +44,8 @@ export default function Home({ route, navigation }) {
         <Text style={styles.title}>Fread</Text>
         <Text style={styles.intro}>
           {" "}
-          Hello {user ? user.name.split(" ")[0] : ""}!
+          {/* Hello {user ? user.name.split(" ")[0] : ""}! */}
+          Hello
         </Text>
       </View>
       <TouchableOpacity
@@ -106,5 +107,6 @@ const styles = StyleSheet.create({
   },
   intro: {
     fontSize: 30,
+    textAlign: "center",
   },
 });
