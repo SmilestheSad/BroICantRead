@@ -1,23 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import * as Google from "expo-google-app-auth";
 import { IOS_CLIENT_ID } from "@env";
+import { useAuthState } from "react-firebase-hooks/auth";
+import firebase from "firebase/app";
 export default function Home({ navigation }) {
-  const [user, setUser] = useState();
-  const [accessToken, setAccessToken] = useState();
-  const [userExist, setUserExist] = useState(false);
-
-  // useEffect(() => {
-  //   console.log("HELLO");
-  //   const { user, accessToken } = route.params;
-  //   if (user) {
-  //     setUserExist(true);
-  //     setUser(user);
-  //     setAccessToken(accessToken);
-  //   }
-  // }, []);
-
+  const [user, loading] = useAuthState(firebase.auth());
+  console.log("hello", user);
   const signIn = () => {
     navigation.navigate("Login");
   };
@@ -43,26 +32,25 @@ export default function Home({ navigation }) {
       <View>
         <Text style={styles.title}>Fread</Text>
         <Text style={styles.intro}>
-          {" "}
           {/* Hello {user ? user.name.split(" ")[0] : ""}! */}
-          Hello
+          Welcome!
         </Text>
       </View>
       <TouchableOpacity
         onPress={() => {
-          if (userExist) {
+          if (user) {
             navigation.navigate("Camera");
           }
         }}
       >
-        {userExist ? (
+        {user ? (
           <Text style={styles.camText}> Go to Camera</Text>
         ) : (
           <Text style={{ color: "grey" }}>Login to access camera</Text>
         )}
       </TouchableOpacity>
       <View style={styles.logButton}>
-        {userExist ? (
+        {user ? (
           <TouchableOpacity onPress={() => logOut()}>
             <Text>Log out</Text>
           </TouchableOpacity>

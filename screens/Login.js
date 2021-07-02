@@ -1,6 +1,4 @@
-import * as Google from "expo-google-app-auth";
 import React, { useState } from "react";
-import { IOS_CLIENT_ID } from "@env";
 import {
   View,
   Text,
@@ -8,17 +6,21 @@ import {
   StyleSheet,
   TextInput,
 } from "react-native";
-import * as firebase from "firebase";
+import firebase from "firebase/app";
+
 export default function Login({ navigation }) {
-  const [email, setEmail] = useState("email");
-  const [password, setPassword] = useState("password");
-  const [register, setRegister] = useState("false");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [register, setRegister] = useState(false);
   let isSignedIn = false;
   const signIn = async (email, password) => {
     if (register) {
       try {
-        await firebase.auth().createUserWithEmailAndPassword(email, password);
+        const userCreds = await firebase
+          .auth()
+          .createUserWithEmailAndPassword(email, password);
         isSignedIn = true;
+        setUser(userCreds.user);
       } catch (error) {
         console.log(error);
         switch (error.code) {
@@ -34,12 +36,11 @@ export default function Login({ navigation }) {
       }
     } else {
       try {
+        console.log("here");
         await firebase.auth().signInWithEmailAndPassword(email, password);
         isSignedIn = true;
-        console.log("hi");
       } catch (error) {
         switch (error.code) {
-          // add rest of errors later
           case "auth/invalid-email":
             console.log("invalid email");
           case "auth/wrong-password":
@@ -51,6 +52,7 @@ export default function Login({ navigation }) {
         }
       }
     }
+    console.log(isSignedIn);
     if (isSignedIn) {
       console.log("signed in");
       navigation.reset({
@@ -67,13 +69,16 @@ export default function Login({ navigation }) {
     <View style={styles.container}>
       <TextInput
         value={email}
+        placeholder="email"
         onChangeText={(e) => setEmail(e)}
         style={styles.inputField}
       />
       <TextInput
         value={password}
+        placeholder="password"
         onChangeText={(e) => setPassword(e)}
         style={styles.inputField}
+        secureTextEntry={true}
       />
       <TouchableOpacity onPress={() => signIn(email, password)}>
         <Text style={styles.signInText}>
