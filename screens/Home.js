@@ -36,6 +36,7 @@ export default function Home({ navigation }) {
         </Text>
       </View>
       <TouchableOpacity
+        style={styles.button}
         onPress={() => {
           if (user) {
             navigation.navigate("Camera", { user });
@@ -46,6 +47,20 @@ export default function Home({ navigation }) {
           <Text style={styles.camText}> Go to Camera</Text>
         ) : (
           <Text style={{ color: "grey" }}>Login to access camera</Text>
+        )}
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          if (user) {
+            navigation.navigate("PastMessages", { user });
+          }
+        }}
+      >
+        {user ? (
+          <Text style={styles.camText}> View past messages</Text>
+        ) : (
+          <Text style={{ color: "grey" }}>Login to access past messages</Text>
         )}
       </TouchableOpacity>
       <View style={styles.logButton}>
@@ -95,5 +110,8 @@ const styles = StyleSheet.create({
   intro: {
     fontSize: 30,
     textAlign: "center",
+  },
+  button: {
+    padding: 20,
   },
 });
