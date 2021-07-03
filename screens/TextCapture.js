@@ -1,18 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { saveMessageToFirestore } from "../helpers/saveMessageToFirestore";
 import Spinner from "react-native-loading-spinner-overlay";
 import { Camera } from "expo-camera";
 import { GOOGLE_API_KEY } from "@env";
 import TextDisplay from "../components/TextDisplay";
 import * as FileSystem from "expo-file-system";
 
-export default function TextCapure() {
+export default function TextCapture({ route }) {
   const [permission, setPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [loading, setLoading] = useState(false);
   const [textView, setTextView] = useState(false);
   const [foundText, setFoundText] = useState("");
   const camRef = useRef();
+  const { user } = route.params;
   useEffect(() => {
     Camera.requestPermissionsAsync()
       .then(({ status }) => {
@@ -72,8 +74,10 @@ export default function TextCapure() {
         });
 
         const data = await res.json();
-        setLoading(false);
         const text = data.responses[0].textAnnotations[0].description;
+        const time = new Date();
+        await saveMessageToFirestore(user, { text, time });
+        setLoading(false);
         console.log(text);
         setFoundText(text);
         setTextView(true);

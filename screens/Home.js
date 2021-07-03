@@ -6,7 +6,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import firebase from "firebase/app";
 export default function Home({ navigation }) {
   const [user, loading] = useAuthState(firebase.auth());
-  console.log("hello", user);
   const signIn = () => {
     navigation.navigate("Login");
   };
@@ -39,7 +38,7 @@ export default function Home({ navigation }) {
       <TouchableOpacity
         onPress={() => {
           if (user) {
-            navigation.navigate("Camera");
+            navigation.navigate("Camera", { user });
           }
         }}
       >

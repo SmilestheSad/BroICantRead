@@ -13,14 +13,14 @@ export default function TextDisplay(props) {
           }}
           style={styles.button}
         >
-          <Icon name="back" type="antdesign" size="80" style={styles.icon} />
+          <Icon name="back" type="antdesign" size={80} style={styles.icon} />
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
             Speech.speak(props.foundText);
           }}
         >
-          <Icon name="multitrack-audio" size="80" style={styles.icon} />
+          <Icon name="multitrack-audio" size={80} style={styles.icon} />
         </TouchableOpacity>
       </View>
     </View>

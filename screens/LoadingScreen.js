@@ -1,5 +1,5 @@
 import { View, ActivityIndicator } from "react-native";
-import firebase from "firebase";
+import firebase from "firebase/app";
 import React, { useEffect } from "react";
 export default function LoadingScreen({ navigation }) {
   useEffect(
