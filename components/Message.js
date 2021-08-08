@@ -1,20 +1,21 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-export default function Message({ message }) {
+export default function Message({ message, time }) {
   return (
     <View style={styles.messageContainer}>
-      <Text>{message}</Text>
+      <Text>Message: {message}</Text>
+      <Text>Time Sent: {time}</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   messageContainer: {
-    backgroundColor: "#FFF",
     height: 50,
-    borderColor: "#20232a",
-    borderRadius: 2,
-    borderWidth: 4,
-    marginVertical: 8,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white",
+    borderWidth: 1,
   },
 });
