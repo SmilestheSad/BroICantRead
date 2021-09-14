@@ -12,9 +12,7 @@ An app to help individuals read
 - Images can be scanned for text via Google Cloud's Vision API, which can then be played as audio
 - Previously found texts in images are saved through firestore and can be viewed
 
-# TODO
+# Next Steps
 
-- Display error on login page when failed
-- Make the app prettier and fix layout
-- Allow for analysis of previously scanned text
-- Store more information in the message components (e.g: time scanned)
+- Better error handling
+- Enable users to analyze previously scan texts via a dictionary API
