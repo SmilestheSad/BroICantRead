@@ -1,6 +1,6 @@
 # Fread
 
-An app to help individuals read
+An app to help individuals learn to read! Simply take a picture with your camera of a piece of text, and have it be read out loud to you. You can also check your previously scanned mesages and go over them again.
 
 # Setup
 
